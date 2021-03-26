@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Tree res.partner -->
+    <record model="ir.ui.view" id="view_id">
+        <field name="name">res.partner.pyme.list</field>
+        <field name="model">res.partner</field>
+        <field name="priority" eval="6" />
+        <!-- <field name="inherit_id" ref="base.view_partner_tree" /> -->
+        <!-- <field name="mode">primary</field> -->
+        <field name="arch" type="xml">
+            <tree string="Contacts">
+                <field name="display_name" string="Name" />
+                <field name="street" optional="show" />
+                <field name="phone" class="o_force_ltr" optional="show"/>
+                <field name="email" optional="show"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- View Contactos.Clientes -->
+    <record id="res_partner_action_customer_pyme" model="ir.actions.act_window">
+        <field name="name">Clientes</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">res.partner</field>
+        <field name="view_mode">tree,form</field>
+        <field name="context">{'search_default_customer': 1,'res_partner_search_mode': 'customer', 'default_is_company': True, 'default_customer_rank': 1}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+            Create a new customer in your address book
+            </p><p>
+            Odoo helps you easily track all activities related to a customer.
+            </p>
+        </field>
+    </record>
+
+    <!-- View Contactos.Proveedores -->
+    <record id="res_partner_action_supplier_pyme" model="ir.actions.act_window">
+        <field name="name">Proveedores</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">res.partner</field>
+        <field name="view_mode">tree,form</field>
+        <field name="context">{'search_default_supplier': 1,'res_partner_search_mode': 'supplier', 'default_is_company': True, 'default_supplier_rank': 1}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+            Create a new supplier in your address book
+            </p><p>
+            Odoo helps you easily track all activities related to a supplier.
+            </p>
+        </field>
+    </record>
+
+    <!-- Menu Contactos -->
+    <record model="ir.ui.menu" id="contacts.res_partner_menu_contacts">
+        <field name="active" eval="False"/>
+    </record>
+
+    <menuitem id="res_partner_menu_clients"
+        name="Clientes"
+        action="res_partner_action_customer_pyme"
+        parent="contacts.menu_contacts"
+        sequence="1"/>
+    
+    <menuitem id="res_partner_menu_suppliers"
+        name="Proveedores"
+        action="res_partner_action_supplier_pyme"
+        parent="contacts.menu_contacts"
+        sequence="2"/>
+
+    <!-- <record model="ir.ui.menu" id="contacts.res_partner_menu_contacts">
+        <field name="active" eval="False"/>
+    </record> -->
+
+
+
+</odoo>

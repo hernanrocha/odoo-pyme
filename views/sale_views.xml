@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Menu Ventas -->
+    <record model="ir.ui.menu" id="sale.menu_sale_invoicing">
+        <field name="active" eval="False"/>
+    </record>
+
+    <record model="ir.ui.menu" id="sale.sales_team_config">
+        <field name="active" eval="False"/>
+    </record>
+
+    <record model="ir.ui.menu" id="sale.menu_tag_config">
+        <field name="active" eval="False"/>
+    </record>
+
+    <record model="ir.ui.menu" id="sale.report_sales_team">
+        <field name="active" eval="False"/>
+    </record>
+
+    <record model="ir.ui.menu" id="sale.res_partner_menu">
+        <field name="active" eval="False"/>
+    </record>
+
+    <record model="ir.ui.menu" id="sale.product_menu_catalog">
+        <field name="active" eval="False"/>
+    </record>
+
+</odoo>
