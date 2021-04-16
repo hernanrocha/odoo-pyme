@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record model="ir.ui.view" id="view_id">
+        <field name="name">product.template.pyme.list</field>
+        <field name="model">product.template</field>
+        <field name="priority" eval="10" />
+        <!-- <field name="inherit_id" ref="base.view_partner_tree" /> -->
+        <!-- <field name="mode">primary</field> -->
+        <field name="arch" type="xml">
+    
+            <tree string="Productos" multi_edit="1" sample="1">
+                <field name="product_variant_count" invisible="1"/>
+                <field name="sale_ok" invisible="1"/>
+                <field name="currency_id" invisible="1"/>
+                <field name="cost_currency_id" invisible="1"/>
+                <field name="type" invisible="1"/>
+
+                <field name="sequence" widget="handle" readonly="1"/>
+                <field name="categ_id" optional="show"/>
+                <field name="name" />
+                <field name="company_id" options="{'no_create_edit': True}" groups="base.group_multi_company" optional="hide"/>
+                
+                <!-- Compra/Venta -->
+                <field name="seller_name" />
+                <field name="price_buy" widget="monetary" options="{'currency_field': 'currency_id'}" />
+                <field name="standard_price" widget="monetary" options="{'currency_field': 'cost_currency_id'}" optional="show" />
+                <field name="list_price" widget="monetary" options="{'currency_field': 'currency_id'}" optional="show" decoration-muted="not sale_ok"/>
+                
+                <!-- Inventario -->
+                <!-- TODO: unidad de medida -->
+                <field name="qty_available" attrs="{'invisible':[('type', '!=', 'product')]}" optional="show" decoration-danger="qty_available &lt; 0"/>
+                <field name="virtual_available" attrs="{'invisible':[('type', '!=', 'product')]}" optional="show" decoration-danger="virtual_available &lt; 0" decoration-bf="1"/>
+
+                <field name="uom_id" readonly="1" optional="show" groups="uom.group_uom"/>
+                <field name="active" invisible="1"/>
+                <field name="activity_exception_decoration" widget="activity_exception"/>
+            </tree>
+        </field>
+    </record>
+
+</odoo>

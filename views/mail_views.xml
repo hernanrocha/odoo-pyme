@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- TODO: Restringir menu para ser visible solo en admin -->
+    <record model="ir.ui.menu" id="mail.menu_root_discuss">
+        <field name="active" eval="False"/>
+    </record>
+
+</odoo>

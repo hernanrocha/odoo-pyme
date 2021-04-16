@@ -10,13 +10,17 @@
     'description': "",
     'depends': [
         'contacts',
+        'mail',
         'purchase',
         'sale',
-        'account'
+        'account',
+        'stock'
     ],
     'data': [
+        'views/mail_views.xml',
         'views/contacts_views.xml',
-        'views/products_views.xml',
+        'views/inventory_views.xml',
+        'views/product_views.xml',
         'views/purchase_views.xml',
         'views/sale_views.xml',
     ],
