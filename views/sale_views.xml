@@ -76,7 +76,7 @@
                     <!-- <button name="action_quotation_send" string="Send by Email" type="object" states="sent,sale"/> -->
                     <button name="action_cancel" type="object" string="Cancelar" attrs="{'invisible': ['|', ('state', 'not in', ['draft', 'sent','sale']), ('id', '=', False)]}"/>
                     <button name="action_draft" states="cancel" type="object" string="Set to Quotation"/>
-                    <field name="state" widget="statusbar" statusbar_visible="draft,sent,sale"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,sale,done"/>
                 </header>
                 <sheet>
                     <div class="oe_button_box" name="button_box">
@@ -186,14 +186,14 @@
                                                     }"
                                                 />
                                             </div>
-                                            <label for="qty_delivered" string="Delivered" attrs="{'invisible': [('parent.state', 'not in', ['sale', 'done'])]}"/>
+                                            <label for="qty_delivered" string="Entregado" attrs="{'invisible': [('parent.state', 'not in', ['sale', 'done'])]}"/>
                                             <div name="delivered_qty" attrs="{'invisible': [('parent.state', 'not in', ['sale', 'done'])]}">
                                                 <field name="qty_delivered" attrs="{'readonly': [('qty_delivered_method', '!=', 'manual')]}"/>
                                             </div>
-                                            <label for="qty_invoiced" string="Invoiced" attrs="{'invisible': [('parent.state', 'not in', ['sale', 'done'])]}"/>
+                                            <!-- <label for="qty_invoiced" string="Invoiced" attrs="{'invisible': [('parent.state', 'not in', ['sale', 'done'])]}"/>
                                             <div name="invoiced_qty" attrs="{'invisible': [('parent.state', 'not in', ['sale', 'done'])]}">
                                                 <field name="qty_invoiced" attrs="{'invisible': [('parent.state', 'not in', ['sale', 'done'])]}"/>
-                                            </div>
+                                            </div> -->
                                             <field name="price_unit"/>
                                             <field name="tax_id" widget="many2many_tags" options="{'no_create': True}" context="{'search_view_ref': 'account.account_tax_view_search'}" domain="[('type_tax_use','=','sale'),('company_id','=',parent.company_id)]"
                                                 attrs="{'readonly': [('qty_invoiced', '&gt;', 0)]}"/>
