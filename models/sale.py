@@ -41,7 +41,7 @@ class SaleOrder(models.Model):
     def create(self, vals):
         res = super(SaleOrder, self).create(vals)
 
-        # Autoconfirm
+        # Autoconfirm (state=sale, date_order=today())
         res.action_confirm()
 
         return res
