@@ -51,7 +51,7 @@
 
     <!-- View Compras.Ordenes -->
     <record id="purchase_form_action" model="ir.actions.act_window">
-        <field name="name">Pedidos</field>
+        <field name="name">Pedidos de Compra</field>
         <field name="type">ir.actions.act_window</field>
         <field name="res_model">purchase.order</field>
         <field name="view_mode">tree,form</field>
