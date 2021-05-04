@@ -29,7 +29,10 @@
     <record model="ir.ui.menu" id="sale.sale_order_menu">
         <field name="active" eval="False"/>
     </record>
-    
+
+    <record model="ir.ui.menu" id="sale.menu_sale_report">
+        <field name="active" eval="False"/>
+    </record>    
 
         <menuitem id="sale_menu_root"
             name="Ventas"
@@ -37,6 +40,7 @@
             active="False"
             sequence="7"/>
 
+    <!-- FORM VIEW - Venta -->
         <record id="view_order_form" model="ir.ui.view">
             <field name="name">sale.order.form</field>
             <field name="model">sale.order</field>
@@ -316,13 +320,14 @@
                                     />
                                     <field name="qty_delivered_manual" invisible="1"/>
                                     <field name="qty_delivered_method" invisible="1"/>
-                                    <field
+                                    <field name="qty_invoiced" invisible="1" />
+                                    <!-- <field
                                         name="qty_invoiced"
                                         decoration-info="(not display_type and invoice_status == 'to invoice')" decoration-bf="(not display_type and invoice_status == 'to invoice')"
                                         string="Invoiced"
                                         attrs="{'column_invisible': [('parent.state', 'not in', ['sale', 'done'])]}"
                                         optional="show"
-                                    />
+                                    /> -->
                                     <field name="qty_to_invoice" invisible="1"/>
                                     <field name="product_uom_readonly" invisible="1"/>
                                     <field
@@ -539,11 +544,46 @@
         <field name="view_id" ref="view_order_tree_pyme"/>
     </record>
 
+    <!-- PIVOT VIEW - Reportes -->
+    <record id="view_order_product_pivot" model="ir.ui.view">
+         <field name="name">sale.report.pivot</field>
+         <field name="model">sale.report</field>
+         <field name="arch" type="xml">
+             <pivot string="Sales Analysis" disable_linking="True" sample="1">
+                 <field name="categ_id" type="row"/>
+                 <field name="product_id" type="row"/>
+                 <field name="date" interval="month" type="col"/>
+                 <field name="qty_delivered" type="measure"/>
+                 <field name="price_total" type="measure"/>
+             </pivot>
+         </field>
+    </record>
+
+    <!-- WINDOW ACTION - Reportes -->
+    <record id="action_order_report_all" model="ir.actions.act_window">
+        <field name="name">Estadísticas de Ventas</field>
+        <field name="res_model">sale.report</field>
+        <field name="view_mode">pivot,graph</field>
+        <field name="view_id" ref="view_order_product_pivot"></field>
+        <field name="search_view_id" ref="sale.view_order_product_search"/>
+        <field name="context">{'search_default_Sales':1, 'group_by_no_leaf':1,'group_by':[]}</field>
+        <field name="help">This report performs analysis on your quotations and sales orders. Analysis check your sales revenues and sort it by different group criteria (salesman, partner, product, etc.) Use this report to perform analysis on sales not having invoiced yet. If you want to analyse your turnover, you should use the Invoice Analysis report in the Accounting application.</field>
+    </record>
+
+    <!-- MENU PEDIDOS -->
     <menuitem id="sale_order_menu"
         name="Pedidos"
         parent="sale.sale_menu_root"
         groups="sales_team.group_sale_salesman"
         action="sale_order_action_view_order_tree"
         sequence="1"/>
+
+    <!-- MENU REPORTES -->
+    <menuitem id="menu_sale_report"
+            name="Reportes"
+            parent="sale.sale_menu_root"
+            sequence="5"
+            groups="sales_team.group_sale_salesman"
+            action="action_order_report_all" />
 
 </odoo>

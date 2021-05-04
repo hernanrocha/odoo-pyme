@@ -9,16 +9,6 @@ from odoo.exceptions import ValidationError
 #  - Mark As Done: purchase -> done
 #  - To Draft      cancel   -> draft
 
-class StockPicking(models.Model):
-    _inherit = "stock.picking"
-
-    def _pre_action_done_hook(self):
-        print("PRE ACTION DONE HOOK")
-        return super(StockPicking, self)._pre_action_done_hook()
-
-        # env['stock.immediate.transfer'].process()
-        # return True
-
 class PurchaseOrder(models.Model):
     _inherit = "purchase.order"
     
@@ -29,29 +19,29 @@ class PurchaseOrder(models.Model):
         # Autoconfirm
         res.button_confirm()
 
-        # Move to Done
-        res.button_done()
-        
         return res
 
-    def action_done(self):
-        for purchase in self:
-            if purchase.state == 'purchase':
-                # Confirmar Compra
-                purchase.button_done()
-            else:
-                raise ValidationError("Solamente pueden marcarse como hechos los pedidos confirmados.")
-        
-        # TODO Marcar como hechas las ordenes de recepcion en inventario
-        picking_list = self.env['stock.picking'].search([('origin', 'in', self.mapped('name'))])
-        print(picking_list)
+    def button_confirm(self):
+        res = super(PurchaseOrder,self).button_confirm()
+        for order in self:
 
-        # for picking in picking_list:
-        #     print(picking)
-        #     # stock_picking.py
-        #     # TODO: no se marcan como recibidas
-        #     v = picking.with_context(skip_immediate=True, skip_backorder=True).button_validate()
-        #     print(v)
-        #     transfer = self.env.ref('stock.view_immediate_transfer')
-        #     print(transfer)
-        #     print(transfer.process())
+            # warehouse = order.warehouse_id
+            # if warehouse.is_delivery_set_to_done and order.picking_ids: 
+            for picking in order.picking_ids:
+                picking.action_assign()
+                picking.action_confirm()
+                for mv in picking.move_ids_without_package:
+                    mv.quantity_done = mv.product_uom_qty
+                picking.button_validate()
+
+            # if warehouse.create_invoice and not order.invoice_ids:
+            #     order._create_invoices()  
+
+            # if warehouse.validate_invoice and order.invoice_ids:
+            #     for invoice in order.invoice_ids:
+            #         invoice.action_post()
+
+            # Move Purchase Order to Done
+            order.button_done()
+
+        return res

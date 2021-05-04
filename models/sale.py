@@ -43,9 +43,36 @@ class SaleOrder(models.Model):
 
         # Autoconfirm (state=sale, date_order=today())
         res.action_confirm()
-
+        
         return res
 
+    def action_confirm(self):
+        res = super(SaleOrder,self).action_confirm()
+        for order in self:
+
+            # TODO: add ["is_delivery_set_to_done", "create_invoice", "validate_invoice"] to settings
+            # taken from sale_order_automation modules
+
+            # warehouse = order.warehouse_id
+            # if warehouse.is_delivery_set_to_done and order.picking_ids: 
+            for picking in order.picking_ids:
+                picking.action_assign()
+                picking.action_confirm()
+                for mv in picking.move_ids_without_package:
+                    mv.quantity_done = mv.product_uom_qty
+                picking.button_validate()
+
+            # if warehouse.create_invoice and not order.invoice_ids:
+            #     order._create_invoices()  
+
+            # if warehouse.validate_invoice and order.invoice_ids:
+            #     for invoice in order.invoice_ids:
+            #         invoice.action_post()
+
+            # Move Sale Order to Done
+            order.action_done()
+
+        return res 
 
 # @api.onchange('product_id')
 # def onchange_product_id(self):

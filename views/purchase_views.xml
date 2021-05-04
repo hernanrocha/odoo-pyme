@@ -1,19 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
 
-    <record model="ir.ui.menu" id="purchase.menu_purchase_rfq">
-        <field name="active" eval="False"/>
+    <!-- DESACTIVAR MENU - COMPRAS -->
+    <record model="ir.ui.menu" id="purchase.menu_procurement_management">
+        <field name="active" eval="False" />
     </record>
 
-    <record model="ir.ui.menu" id="purchase.menu_purchase_products">
-        <field name="active" eval="False"/>
-    </record>
-
-    <record model="ir.ui.menu" id="purchase.menu_purchase_form_action">
-        <field name="active" eval="False"/>
-    </record>
-
-    <!-- Tree Compras.Ordenes -->
+    <!-- TREE VIEW - Compras -->
     <record id="purchase_order_view_tree_pyme" model="ir.ui.view">
         <field name="name">purchase.order.view.tree.pyme</field>
         <field name="model">purchase.order</field>
@@ -25,17 +18,17 @@
                 class="o_purchase_order"
                 sample="1">
                 <header>
-                    <button name="action_done" type="object" string="Marcar como Hecho"/>
+                    <!-- <button name="action_done" type="object" string="Marcar como Hecho"/> -->
                     <!-- TODO: mostrar vista en inventario -->
                 </header>
                 <field name="priority" optional="show" widget="priority" nolabel="1"/>
                 <field name="message_unread" invisible="1"/>
-                <field name="name" string="Reference" readonly="1" decoration-bf="1"/>
+                <field name="name" string="Referencia" readonly="1" decoration-bf="1"/>
                 <field name="date_approve" widget="date" invisible="context.get('quotation_only', False)" optional="show"/>
                 <field name="date_order" widget="date" invisible="not context.get('quotation_only', False)" optional="show"/>
                 <field name="date_planned" widget="date" invisible="context.get('quotation_only', False)" optional="show"/>
                 <field name="partner_id"/>
-                <field name="partner_ref" optional="hide"/>
+                <field name="partner_ref" optional="show"/>
                 <field name="company_id" groups="base.group_multi_company" options="{'no_create': True}" optional="show"/>
                 <!-- <field name="user_id" widget="many2one_avatar_user" optional="show"/> -->
                 <!-- <field name="activity_ids" widget="list_activity" optional="show"/> -->
@@ -43,13 +36,13 @@
                 <!-- <field name="amount_untaxed" sum="Total Untaxed amount" string="Untaxed" widget="monetary" optional="hide"/> -->
                 <field name="amount_total" sum="Total amount" widget="monetary" optional="show" decoration-bf="1"/>
                 <field name="currency_id" invisible="1"/>
-                <field name="state" widget="badge" decoration-info="state == 'purchase'" decoration-success="state == 'done'" />
+                <field name="state" optional="hide" widget="badge" decoration-info="state == 'purchase'" decoration-success="state == 'done'" />
                 <!-- <field name="invoice_status" widget="badge" decoration-success="invoice_status == 'invoiced'" decoration-info="invoice_status == 'to invoice'" optional="show"/> -->
             </tree>
         </field>
     </record>
 
-    <!-- View Compras.Ordenes -->
+    <!-- WINDOW ACTION - Compras -->
     <record id="purchase_form_action" model="ir.actions.act_window">
         <field name="name">Pedidos de Compra</field>
         <field name="type">ir.actions.act_window</field>
@@ -69,9 +62,11 @@
         </field>
     </record>
 
-    <menuitem action="purchase_form_action" id="menu_purchase_form_action" parent="purchase.menu_procurement_management" sequence="6"/>
+    <!-- MENU - Compras -->
+    <menuitem action="purchase_form_action" id="menu_purchase_form_action" 
+        parent="purchase.menu_purchase_root" sequence="1" name="Pedidos" />
 
-    <!-- Form purchase.order -->
+    <!-- FORM VIEW - Compras -->
     <record id="purchase_order_form_pyme" model="ir.ui.view">
         <field name="name">purchase.order.form.pyme</field>
         <field name="model">purchase.order</field>
