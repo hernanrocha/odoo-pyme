@@ -5,3 +5,4 @@
 from . import product_template
 from . import purchase
 from . import sale
+from . import resultados

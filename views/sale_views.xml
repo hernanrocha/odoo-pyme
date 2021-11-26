@@ -570,6 +570,82 @@
         <field name="help">This report performs analysis on your quotations and sales orders. Analysis check your sales revenues and sort it by different group criteria (salesman, partner, product, etc.) Use this report to perform analysis on sales not having invoiced yet. If you want to analyse your turnover, you should use the Invoice Analysis report in the Accounting application.</field>
     </record>
 
+    <record id="view_monthly_results_report_tree" model="ir.ui.view">
+         <field name="name">monthly.results.report.tree</field>
+         <field name="model">monthly.results.report</field>
+         <field name="arch" type="xml">
+             <tree>
+                 <field name="name" />
+                 <field name="start_date" />
+                 <field name="end_date" />
+             </tree>
+         </field>
+    </record>
+
+    <record id="view_monthly_results_report_form" model="ir.ui.view">
+         <field name="name">monthly.results.report.form</field>
+         <field name="model">monthly.results.report</field>
+         <field name="arch" type="xml">
+             <form>
+                <sheet>
+                    <field name="name" />
+                    <group>
+                        <field name="start_date" />
+                        <field name="end_date" />
+                    </group>
+                    <button name="compute_results" type="object" string="Calcular"/>
+                    <notebook>
+                        <page string="Resultados">
+                            <field name="line_ids">
+                                <tree>
+                                    <field name="name" />
+                                    <field name="purchases" sum="Total" />
+                                    <field name="sales" sum="Total" />
+                                    <field name="start_stock" sum="Total" />
+                                    <field name="end_stock" sum="Total" />
+                                    <field name="net" sum="Total" />
+                                </tree>
+                            </field>
+                        </page>
+                        <page string="Ventas">
+                            <field name="sale_ids">
+                                <tree>
+                                    <field name="state" invisible="1" />
+                                    <field name="name" />
+                                </tree>
+                            </field>
+                        </page>
+                        <page string="Compras">
+                            <field name="purchase_ids">
+                                <tree>
+                                    <field name="name" />
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                    <group col="2">
+                        <field name="purchases_total" />
+                        <field name="sales_total" />
+                        <field name="start_stock" />
+                        <field name="end_stock" />
+                        <field name="net_total" />
+                    </group>
+                </sheet>
+             </form>
+         </field>
+    </record>
+
+    <!-- WINDOW ACTION - Reporte de Resultados -->
+    <record id="action_sale_report_results" model="ir.actions.act_window">
+        <field name="name">Reporte de Resultados</field>
+        <field name="res_model">monthly.results.report</field>
+        <field name="view_mode">tree,form</field>
+        <!-- <field name="view_id" ref="view_order_product_pivot"></field> -->
+        <!-- <field name="search_view_id" ref="sale.view_order_product_search"/> -->
+        <!-- <field name="context">{'search_default_Sales':1, 'group_by_no_leaf':1,'group_by':[]}</field> -->
+        <!-- <field name="help">This report performs analysis on your quotations and sales orders. Analysis check your sales revenues and sort it by different group criteria (salesman, partner, product, etc.) Use this report to perform analysis on sales not having invoiced yet. If you want to analyse your turnover, you should use the Invoice Analysis report in the Accounting application.</field> -->
+    </record>
+
     <!-- MENU PEDIDOS -->
     <menuitem id="sale_order_menu"
         name="Pedidos"
@@ -580,10 +656,20 @@
 
     <!-- MENU REPORTES -->
     <menuitem id="menu_sale_report"
-            name="Reportes"
-            parent="sale.sale_menu_root"
-            sequence="5"
+        name="Reportes" parent="sale.sale_menu_root" sequence="5">
+        
+        <menuitem id="menu_sale_report_sales"
+            name="Ventas"
+            sequence="1"
             groups="sales_team.group_sale_salesman"
             action="action_order_report_all" />
+
+        <menuitem id="menu_sale_report_results"
+            name="Resultados"
+            sequence="2"
+            groups="sales_team.group_sale_salesman"
+            action="action_sale_report_results" />
+    </menuitem>
+
 
 </odoo>

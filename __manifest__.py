@@ -17,6 +17,8 @@
         'stock'
     ],
     'data': [
+        'security/ir.model.access.csv',
+
         'views/mail_views.xml',
         'views/contacts_views.xml',
         'views/inventory_views.xml',

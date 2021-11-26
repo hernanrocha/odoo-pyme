@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- TREE VIEW - Resultados -->
+    <record id="monthly_results_report_tree" model="ir.ui.view">
+        <field name="name">monthly.results.report.tree</field>
+        <field name="model">monthly.results.report</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="start_date" />
+                <field name="end_date" />
+            </tree>
+        </field>
+    </record>
+
+</odoo>

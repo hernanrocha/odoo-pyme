@@ -65,4 +65,54 @@
         action="product_normal_action_puchased"
         sequence="2"/>
 
+
+    
+    <record id="location_hierarchy" model="ir.ui.view">
+        <field name="name">inventory.locations.hierarchy</field>
+        <field name="model">stock.location</field>
+        <field name="priority" eval="5" />
+        <!-- <field name="field_parent">child_ids</field> -->
+        <field name="arch" type="xml">
+            <tree string="Purchase Order">
+            
+                <field name="name" />
+                <field name="child_ids" context="{'location_id': parent.id}" widget="many2one_barcode" domain="[('location_id', '=', parent.id)]"/>
+                <field name="child_ids">
+                    <tree>
+                        <field name="name" />
+                    </tree>
+                </field>
+
+                <!-- <groupby name="location_id">
+                    <field name="name" />
+                </groupby> -->
+            </tree>
+        </field>
+    </record>
+
+    <!-- WINDOW ACTION - Ubicaciones -->
+    <record id="action_iventory_configuration_locations" model="ir.actions.act_window">
+        <field name="name">Ubicaciones</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">stock.location</field>
+        <field name="view_id" ref="location_hierarchy"></field>
+        <field name="view_mode">tree,form</field>
+        <!-- <field name="context">{"purchase_product_template": 1}</field> -->
+        <!-- <field name="search_view_id" ref="product.product_template_search_view"/> -->
+        <!-- <field name="view_id" eval="False"/>  -->
+    </record>
+
+    <!-- tree ( tree ) view -->
+        
+
+    <!-- MenuItem Configuracion.Gestion de Almacenes.Ubicaciones -->
+    <menuitem id="menu_inventory_configuration_locations" 
+        name="Ubicaciones" 
+        parent="stock.menu_warehouse_config" 
+        action="action_iventory_configuration_locations"
+        sequence="4"/>
+
+    <!-- TODO: Vista Producto. Agrupar por Categoria/Proveedor. Sacar cantidad pronosticada -->
+    <!-- TODO: Fix nombres de "Stock a mano" -->
+
 </odoo>

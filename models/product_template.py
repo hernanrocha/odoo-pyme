@@ -18,8 +18,8 @@ class ProductTemplate(models.Model):
     seller_id = fields.Many2one(comodel_name="product.supplierinfo", string="Proveedor", 
         compute="_compute_seller_id", readonly=True)
 
-    # TODO: add inverse method 
-    seller_name = fields.Char(string="Proveedor", compute="_compute_seller_name")
+    # TODO: add inverse method y sacar lista de proveedores
+    seller_name = fields.Char(string="Proveedor", compute="_compute_seller_name", store=True)
     price_buy = fields.Float(string="Precio de Compra", compute="_compute_price_buy")
 
     @api.depends('seller_ids')
